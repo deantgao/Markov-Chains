@@ -83,6 +83,10 @@ def make_text(chains):
 
     random_key = choice(list_of_keys)
 
+    while random_key[0].islower() or random_key[0] == "--":
+        random_key = choice(list_of_keys)
+
+
     words.append(random_key[0])
     words.append(random_key[1])
 
@@ -92,6 +96,8 @@ def make_text(chains):
         words.append(random_value)
         new_key = (random_key[1], random_value)
         random_key = new_key
+        if random_key[1].endswith("."):
+            break
 
 
     return " ".join(words)
@@ -104,11 +110,6 @@ input_text = open_and_read_file(input_path)
 
 # Get a Markov chain
 chains = make_chains(input_text)
-
-# for key, value in chains.items():
-#     print key, value
-
-
 
 # Produce random text
 random_text = make_text(chains)
