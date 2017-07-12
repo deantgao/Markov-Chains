@@ -45,18 +45,13 @@ def make_chains(text_string):
 
     words = text_string.split()
 
-    counter = 1
-    for word in words: # iterate over each word in the list of words
-        if word != words[-1]: # if the word does not equal the last word in the list
-            key = (word, words[counter]) # create a tuple that is the word and the word following
-            if word != words[-2]: # if the word does not equal the last two words
-                
-                if key not in chains: # if the tuple does not exist in the dict chains:
-                    chains[key] = [words[counter + 1]] # add the tuple as the key and the word following the bigram as the value
-                elif key in chains: # else if tuple is in dict:
-                    (chains[key]).append(words[counter + 1]) # append the word following the bigram to the list that chains[key] is equal to
-                
-        counter += 1
+    # loop over range of length of words - 2
+    for i in range(len(words) - 2):
+        key = (words[i], words[i + 1]) # create a tuple that is the word and the word following
+        if key not in chains: # if the tuple does not exist in the dict chains:
+            chains[key] = [words[i + 2]] # add the tuple as the key and the word following the bigram as the value
+        elif key in chains: # else if tuple is in dict:
+            (chains[key]).append(words[i + 2]) # append the word following the bigram to the list that chains[key] is equal to
 
     return chains
 
@@ -67,22 +62,25 @@ def make_text(chains):
 
     words = []
 
-        # random_key = choice(chains.keys())
-    # print "Random key is", random_key
+    # random_key = choice(chains.keys())
+
+    # words.append(random_key[0])
+    # words.append(random_key[1])
 
     # while random_key in chains.keys():
 
     #     values_list = chains[random_key]
 
     #     chosen_word = choice(values_list)
-    #     print "chosen word is", chosen_word
+
+    #     words.append(chosen_word)
 
     #     new_key = (random_key[1], chosen_word)
-    #     print "New key is", new_key
 
     #     random_key = new_key
 
     list_of_keys = chains.keys()
+
     random_key = choice(list_of_keys)
 
     words.append(random_key[0])
@@ -99,13 +97,18 @@ def make_text(chains):
     return " ".join(words)
 
 
-input_path = "green-eggs.txt"
+input_path = "gettysburg.txt"
 
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
 
 # Get a Markov chain
 chains = make_chains(input_text)
+
+# for key, value in chains.items():
+#     print key, value
+
+
 
 # Produce random text
 random_text = make_text(chains)
